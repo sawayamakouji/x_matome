@@ -1,22 +1,29 @@
-"use client"
+"use client";
 
-import { useState, useEffect } from "react"
-import { getTweets } from "../../lib/supabaseUtils"
-import Tweet from "./Tweet"
+import { useState, useEffect, useCallback } from "react";
+import { getTweets } from "../../lib/supabaseUtils";
+import Tweet from "./Tweet";
+import { LoadingSpinner } from "@/app/components/LoadingSpinner";
 
 export default function TweetList({ initialTags }: { initialTags: string[] }) {
-  const [tweets, setTweets] = useState([])
-  const [selectedTag, setSelectedTag] = useState("")
-  const [searchQuery, setSearchQuery] = useState("")
+  const [tweets, setTweets] = useState<any[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [selectedTag, setSelectedTag] = useState("");
+  const [searchQuery, setSearchQuery] = useState("");
 
-  const loadTweets = async () => {
-    const fetchedTweets = await getTweets(selectedTag, searchQuery)
-    setTweets(fetchedTweets)
-  }
+  const loadTweets = useCallback(async () => {
+    setLoading(true);
+    try {
+      const fetchedTweets = await getTweets(selectedTag, searchQuery);
+      setTweets(fetchedTweets);
+    } finally {
+      setLoading(false);
+    }
+  }, [selectedTag, searchQuery]);
 
   useEffect(() => {
-    loadTweets()
-  }, [selectedTag, searchQuery, loadTweets]) // Added loadTweets to dependencies
+    loadTweets();
+  }, [loadTweets]);
 
   return (
     <div>
@@ -41,12 +48,15 @@ export default function TweetList({ initialTags }: { initialTags: string[] }) {
         className="w-full p-2 mb-4 border rounded"
       />
       <h3 className="text-xl font-bold mb-4">ツイート一覧</h3>
-      <div>
-        {tweets.map((tweet: any) => (
-          <Tweet key={tweet.id} tweet={tweet} onDelete={loadTweets} />
-        ))}
-      </div>
+      {loading ? (
+        <LoadingSpinner />
+      ) : (
+        <div>
+          {tweets.map((tweet: any) => (
+            <Tweet key={tweet.id} tweet={tweet} onDelete={loadTweets} tags={initialTags} />
+          ))}
+        </div>
+      )}
     </div>
-  )
+  );
 }
-
