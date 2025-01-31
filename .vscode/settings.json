@@ -2,5 +2,11 @@
     "css.customData": [".vscode/tailwind.json"],
     "files.associations": {
       "*.css": "tailwindcss"
-    }
+    },
+
+
+    "css.validate": false,
+    "tailwindCSS.experimental.classRegex": [
+      ["classnames\\(([^)]*)\\)", "(?:'|\"|`)([^']*?)(?:'|\"|`)"]
+    ]
   }

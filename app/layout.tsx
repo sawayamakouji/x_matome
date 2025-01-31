@@ -1,7 +1,15 @@
 import "./globals.css"
 import { Inter } from "next/font/google"
 import Script from "next/script"
-import type React from "react" // Added import for React
+import type React from "react"
+import {
+  Sidebar,
+  SidebarContent,
+  SidebarTrigger,
+  SidebarInset,
+  SidebarHeader,
+  SidebarProvider,
+} from "@/components/ui/sidebar";
 
 const inter = Inter({ subsets: ["latin"] })
 
@@ -18,7 +26,9 @@ export default function RootLayout({
   return (
     <html lang="ja">
       <body className={inter.className}>
-        {children}
+        <SidebarProvider> {/* body 内を SidebarProvider で囲む */}
+          {children}
+        </SidebarProvider>
         <Script src="https://platform.twitter.com/widgets.js" strategy="lazyOnload" />
       </body>
     </html>

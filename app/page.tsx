@@ -26,7 +26,7 @@ export default function Home() {
   return (
     <SidebarProvider>
       <div className="flex">
-      <Sidebar collapsible="offcanvas">
+      <Sidebar collapsible="offcanvas"> {/* collapsible prop を確認 */}
           <SidebarContent>
             <SidebarHeader>
               <h3 className="text-lg font-semibold mb-2">ツイート投稿</h3>
@@ -35,7 +35,7 @@ export default function Home() {
           </SidebarContent>
           <SidebarTrigger/>
         </Sidebar>
-        <SidebarInset>
+        <SidebarInset> {/* Sidebar の兄弟要素として配置 */}
           <div className="container mx-auto px-4 py-8 flex flex-col items-center">
             <h1 className="text-3xl font-bold mb-8">ツイート埋め込み＆管理</h1>
             <TweetList initialTags={[]} key={shouldRefresh} />
