@@ -395,7 +395,7 @@ const SidebarSeparator = React.forwardRef<
 })
 SidebarSeparator.displayName = "SidebarSeparator"
 
-import { TweetForm } from "@/app/components/TweetForm"
+import TweetForm from "@/app/components/TweetForm"
 
 const SidebarContent = React.forwardRef<
   HTMLDivElement,
@@ -415,7 +415,7 @@ const SidebarContent = React.forwardRef<
       <SidebarGroup>
         <SidebarGroupLabel>新規投稿</SidebarGroupLabel>
         <div className="p-2">
-          <TweetForm compact />
+        <TweetForm  compact={true} onTweetAdded={() => {}}/>
         </div>
       </SidebarGroup>
     </div>

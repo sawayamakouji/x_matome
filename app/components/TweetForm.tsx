@@ -6,17 +6,21 @@ import { LoadingSpinner } from "@/app/components/LoadingSpinner";
 import { Button } from "@/components/ui/button";
 
 function isValidTweetUrl(url: string): boolean {
-const tweetUrlPattern =
-  /^https?:\/\/((?:twitter|x)\.com)\/[a-zA-Z0-9_]+\/status\/[0-9]+/i;
-return tweetUrlPattern.test(url);
+    const tweetUrlPattern =
+        /^https?:\/\/((?:twitter|x)\.com)\/[a-zA-Z0-9_]+\/status\/[0-9]+/i;
+    return tweetUrlPattern.test(url);
 }
 
-export default function TweetForm({ onTweetAdded }: { onTweetAdded: () => void }) {
+interface TweetFormProps {
+  onTweetAdded: () => void;
+  compact?: boolean; // compact プロパティをオプションとして追加
+}
+export default function TweetForm({ onTweetAdded, compact }: TweetFormProps) {
   const [url, setUrl] = useState("");
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
   const [newTag, setNewTag] = useState("");
-   const [allTags, setAllTags] = useState<string[]>([]);
-   const [loading, setLoading] = useState(false); // ローディング状態を追加
+  const [allTags, setAllTags] = useState<string[]>([]);
+  const [loading, setLoading] = useState(false); // ローディング状態を追加
 
    useEffect(() => {
     const fetchTags = async () => {
@@ -57,43 +61,50 @@ export default function TweetForm({ onTweetAdded }: { onTweetAdded: () => void }
     }
   }, [url, selectedTags, newTag, onTweetAdded]);
 
-
-return (
-<form onSubmit={handleSubmit} className="mb-8">
-<input
-    type="text"
-    value={url}
-    onChange={(e) => setUrl(e.target.value)}
-    placeholder="ツイートのURL (twitter.com または x.com)"
-    className="w-full p-2 mb-4 border rounded"
+  // ここでコンパクトな表示にするかどうかを制御します。
+    const formClassName = compact ? "mb-0" : "mb-8";
+    const selectClassName = compact ? "w-full p-1 mb-1 border rounded" : "w-full p-2 mb-4 border rounded";
+    const inputClassName = compact ? "w-full p-1 mb-1 border rounded" : "w-full p-2 mb-4 border rounded";
+  return (
+    <form onSubmit={handleSubmit} className={formClassName}>
+        <input
+        type="text"
+        value={url}
+        onChange={(e) => setUrl(e.target.value)}
+        placeholder="ツイートのURL (twitter.com または x.com)"
+        className={inputClassName}
+      />
+      {!compact && (
+        <>
+            <h3 className="text-xl font-bold mb-2">タグを選択 or 新規作成</h3>
+        </>
+      )}
+      <select
+      multiple
+      value={selectedTags}
+      onChange={(e) =>
+        setSelectedTags(
+          Array.from(e.target.selectedOptions, (option) => option.value)
+        )
+      }
+      className={selectClassName}
+      >
+          {allTags.map((tag) => (
+            <option key={tag} value={tag}>
+              {tag}
+            </option>
+          ))}
+      </select>
+      <Input
+        type="text"
+        value={newTag}
+        onChange={(e) => setNewTag(e.target.value)}
+        placeholder="新規タグを入力"
+        className={inputClassName}
     />
-<h3 className="text-xl font-bold mb-2">タグを選択 or 新規作成</h3>
-<select
-  multiple
-  value={selectedTags}
-  onChange={(e) =>
-    setSelectedTags(
-      Array.from(e.target.selectedOptions, (option) => option.value)
-    )
-  }
-  className="w-full p-2 mb-4 border rounded"
->
-  {allTags.map((tag) => (
-      <option key={tag} value={tag}>
-        {tag}
-      </option>
-    ))}
-</select>
-<Input
-  type="text"
-  value={newTag}
-  onChange={(e) => setNewTag(e.target.value)}
-  placeholder="新規タグを入力"
-  className="w-full p-2 mb-4 border rounded"
-/>
-    <Button type="submit" className="w-full p-2 bg-blue-500 text-white rounded hover:bg-blue-600" disabled={loading}>
-       {loading ? <LoadingSpinner size="sm"/> : "追加"}
-  </Button>
-</form>
-  );
+        <Button type="submit" className="w-full p-2 bg-blue-500 text-white rounded hover:bg-blue-600" disabled={loading}>
+         {loading ? <LoadingSpinner size="sm"/> : "追加"}
+        </Button>
+     </form>
+    );
 }
