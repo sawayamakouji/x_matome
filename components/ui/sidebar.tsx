@@ -395,6 +395,8 @@ const SidebarSeparator = React.forwardRef<
 })
 SidebarSeparator.displayName = "SidebarSeparator"
 
+import { TweetForm } from "@/app/components/TweetForm"
+
 const SidebarContent = React.forwardRef<
   HTMLDivElement,
   React.ComponentProps<"div">
@@ -408,7 +410,15 @@ const SidebarContent = React.forwardRef<
         className
       )}
       {...props}
-    />
+    >
+      {props.children}
+      <SidebarGroup>
+        <SidebarGroupLabel>新規投稿</SidebarGroupLabel>
+        <div className="p-2">
+          <TweetForm compact />
+        </div>
+      </SidebarGroup>
+    </div>
   )
 })
 SidebarContent.displayName = "SidebarContent"

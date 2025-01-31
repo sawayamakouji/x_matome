@@ -91,4 +91,16 @@ body {
   body {
     @apply bg-background text-foreground;
   }
+
+  /* styles/globals.css */
+@media (max-width: 767px) {
+  [data-sidebar="trigger"] {
+  display: inline-flex !important;
+  }
+  
+  [data-sidebar="sidebar"][data-mobile="true"] {
+    width: var(--sidebar-width) !important;
+      z-index: 50;
+  }
+  }
 }
