@@ -20,6 +20,7 @@ const handleTweetAdded = useCallback(() => {
 
 return (
     <SidebarProvider>
+      
     <div className="flex">
         <Sidebar>
         <SidebarContent>
