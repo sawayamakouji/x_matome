@@ -12,8 +12,8 @@ function isValidTweetUrl(url: string): boolean {
 }
 
 interface TweetFormProps {
-  onTweetAdded: () => void;
-  compact?: boolean; // compact プロパティをオプションとして追加
+    onTweetAdded: () => void;
+    compact?: boolean; // compact プロパティをオプションとして追加
 }
 export default function TweetForm({ onTweetAdded, compact }: TweetFormProps) {
   const [url, setUrl] = useState("");
